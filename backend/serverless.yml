@@ -1,0 +1,49 @@
+service: foodway-backend
+
+provider:
+  name: aws
+  runtime: nodejs20.x
+  region: ap-south-1
+  architecture: arm64
+  timeout: 28
+
+  environment:
+    MONGODB_URL: ${env:MONGODB_URL}
+    JWT_SECRET: ${env:JWT_SECRET}
+
+    FRONTEND_URL: ${env:FRONTEND_URL}
+
+    SMTP_USER: ${env:SMTP_USER}
+    SMTP_PASS: ${env:SMTP_PASS}
+    SMTP_HOST: ${env:SMTP_HOST}
+    SMTP_PORT: ${env:SMTP_PORT}
+
+    USE_TEST_MAIL: ${env:USE_TEST_MAIL}
+    TEST_EMAIL: ${env:TEST_EMAIL}
+
+    RAZORPAY_KEY_ID: ${env:RAZORPAY_KEY_ID}
+    RAZORPAY_KEY_SECRET: ${env:RAZORPAY_KEY_SECRET}
+
+    CLOUDINARY_CLOUD_NAME: ${env:CLOUDINARY_CLOUD_NAME}
+    CLOUDINARY_API_KEY: ${env:CLOUDINARY_API_KEY}
+    CLOUDINARY_API_SECRET: ${env:CLOUDINARY_API_SECRET}
+
+functions:
+  app:
+    handler: index.handler
+    events:
+      - httpApi: "*"
+
+plugins:
+  - serverless-dotenv-plugin
+
+custom:
+  dotenv:
+    path: .env
+
+package:
+  patterns:
+    - '!**/*.md'
+    - '!node_modules/aws-sdk/**'
+    - 'public/**'
+    - 'assets/**'
